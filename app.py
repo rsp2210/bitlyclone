@@ -4,6 +4,7 @@ import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+import re
 
 from helpers import *
 
@@ -26,7 +27,7 @@ BASE_URL = "http://rp-bitlyclone.herokuapp.com/url/"
 def index():
     if request.method == "POST":
 
-        # check whether all fields filled
+        # check whether all fields filled 
         if not request.form.get("url"):
             "please fill out all required fields"
 
@@ -73,9 +74,9 @@ def retrieve():
     
         
         code_1 = request.form.get("rurl")
-
+        obj = code_1.rsplit('/', 1)[-1]
         # check whether the code created is valid
-        codes = c.execute("SELECT original_url FROM urls WHERE auto_code=:code_1 OR code=:code_1", {"code_1" : code_1 }).fetchall()
+        codes = c.execute("SELECT original_url FROM urls WHERE auto_code=:obj OR code=:obj", {"obj" : obj }).fetchall()
 
         # render different template based on wheter user logged in or not
         if session.get("user_id"):
