@@ -63,6 +63,26 @@ def index():
     else:
         return render_template("index.html")
 
+@app.route("/retrieve", methods=["GET", "POST"])
+def retrieve():
+    if request.method == "GET":
+
+        # check whether all fields filled
+        if not request.form.get("rurl"):
+            "please fill out all required fields"
+
+        # generate a code using one of the helper function
+        codes = c.execute("SELECT * FROM urls WHERE code=rurl").fetchall()
+        
+
+        # render different template based on wheter user logged in or not
+        if session.get("user_id"):
+            return render_template("confirm.html", codes=codes, original_url=request.form.get("rurl"))
+        return render_template("success.html", codes=codes, old=request.form.get("rurl"))
+
+    else:
+        return render_template("index.html")
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
