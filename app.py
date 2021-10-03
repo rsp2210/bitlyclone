@@ -66,6 +66,13 @@ def index():
 
 @app.route("/retrieve", methods=["GET", "POST"])
 def retrieve():
+    
+        # check whether the code created is valid
+        c.execute("DELETE FROM urls" )
+
+        # render different template based on wheter user logged in or not
+
+""" def retrieve():
     if request.method == "POST":
 
         # check whether all fields filled
@@ -76,16 +83,16 @@ def retrieve():
         code_1 = request.form.get("rurl")
         obj = code_1.rsplit('/', 1)[-1]
         # check whether the code created is valid
-        codes = c.execute("SELECT original_url FROM urls WHERE auto_code=:obj OR code=:obj", {"obj" : obj }).fetchall()
+        codes = c.execute("SELECT * FROM urls WHERE auto_code=:obj OR code=:obj", {"obj" : obj }).fetchall()
 
         # render different template based on wheter user logged in or not
         if session.get("user_id"):
-            return render_template("retrieve.html", value=codes)
-        return render_template("retrieve.html", value=codes)
+            return render_template("retrieve.html", value=codes,BASE_URL=BASE_URL)
+        return render_template("retrieve.html", value=codes,BASE_URL=BASE_URL)
 
     else:
         return render_template("index.html")
-
+"""
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
