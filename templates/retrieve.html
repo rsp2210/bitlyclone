@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 {% block main %}
-<h4 style="margin-top:10px ;">Original URL = <a href={{value[0][1]}}>{{value[0][1]}}</a></h4>
-<h4>Shortened URL = <a href={{BASE_URL}}{{value[0][]}}>{{BASE_URL}}{{value[0][3]}}</a></h4>
-<h4>TimeStamp = {{value[0][5]}}</h4>
-<h4>Clicks = {{value[0][7]}}</h4>
+<div style="margin-top: 50px; text-align: justify; margin-left: 350px;">
+    <h4 style="margin-top:10px ;">Original URL = <a href={{value[0][1]}}>{{value[0][1]}}</a></h4>
+    <h4>Shortened URL = <a href={{BASE_URL}}{{value[0][]}}>{{BASE_URL}}{{value[0][3]}}</a></h4>
+    <h4>TimeStamp = {{value[0][5]}}</h4>
+    <h4>Clicks = {{value[0][7]}}</h4>
+</div>
 {% endblock %}

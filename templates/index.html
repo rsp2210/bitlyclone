@@ -1,3 +1,9 @@
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://kit.fontawesome.com/0a44d989c2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
 {% extends "layout.html" %}
 
 {% block title %}
@@ -5,31 +11,33 @@
 {% endblock %}
 
 {% block main %}
-<div class="jumbotron">
-    <h1 class="display-4">Bit.ly Clone</h1>
-  </div>
+
+<div style="margin-top: 100px;" class="loginform">
     <form action="/" method="POST">
-        <div class="form-group">
-            <label for="exampleInputEmail1">URL</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="url" required>
-            <small id="emailHelp" class="form-text text-muted">Put the URL that you want to shorten here</small>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="emailfield">
+            <label for="exampleInputEmail1">URL: </label>
+            <br/>
+            <input type="text" class="exampleInputEmail1" id="exampleInputEmail1" aria-describedby="emailHelp" name="url" required>
+        </div>   
+        <small id="emailHelp" class="form-text text-muted">Put the URL that you want to shorten here</small>
+        <button type="submit" class="loginbutton">Submit</button>
         
 
     </form>
     {% if  session["user_id"] %}
-    <form action="/retrieve" method="POST">
-        <div class="form-group">
-            <label for="exampleInputEmail1">Retrieve</label>
-            <input type="url" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="rurl" required>
-            <small id="emailHelp" class="form-text text-muted">Put the URL that you want to retrieve here</small>
-        </div>
-        <button type="submit" class="btn btn-primary">Retrieve</button>
+    <form style="margin-top: 50px;" action="/retrieve" method="POST">
+        <div class="emailfield">
+            <label for="exampleInputEmail1">Retrieve: </label>
+            <br/>
+            <input type="url" class="exampleInputEmail1" id="exampleInputEmail1" aria-describedby="emailHelp" name="rurl" required>
+        </div>    
+        <small id="emailHelp" class="form-text text-muted">Put the URL that you want to retrieve here</small>
+        <button type="submit" class="loginbutton">Retrieve</button>
         
 
     </form>
     <br>
+</div>
     {% endif %}
     
 {% endblock %}

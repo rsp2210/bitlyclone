@@ -5,21 +5,28 @@
 {% endblock %}
 
 {% block main %}
+
+
+<div style="margin-top: 100px;" class="loginform">
     <form action="/update" method="POST">
-        <div class="form-group">
-            <label for="exampleInputEmail1">Original URL</label>
-            <input type="url" class="form-control" id="exampleInputEmail1" value="{{ original_url }}" readonly>
-            <h2>{{ original_url}}</h2>
+        <div class="emailfield">
+            <label for="exampleInputEmail1">Original URL: </label>
+            <br/>
+            <input style="width: 500px; text-align: left;" type="url" class="input-group-text" id="exampleInputEmail1" value="{{ original_url }}" readonly>
         </div>
-        <label class="sr-only" for="inlineFormInputGroup">New URL</label>
-        <div class="input-group mb-2">
-            <input type="hidden" value="{{ code }}" name="code">
-          <div class="input-group-prepend">
-            <div class="input-group-text">{{ BASE_URL }}</div>
-          </div>
-          <input type="text" class="form-control" id="inlineFormInputGroup" value="{{ code }}" name="new">
+        <div style="margin-top: 35px;" class="emailfield">
+            <label for="inlineFormInputGroup">New URL: </label>
+            <div class="input-group mb-2">
+                <input type="hidden" value="{{ code }}" name="code">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">{{ BASE_URL }}</div>
+                </div>
+                <input type="text" class="exampleInputEmail2" id="inlineFormInputGroup" value="{{ code }}" name="new">
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="loginbutton">Submit</button>
     </form>
+    <br>
+</div>
 
 {% endblock %}
