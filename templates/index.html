@@ -18,6 +18,7 @@
         
 
     </form>
+    {% if  session["user_id"] %}
     <form action="/retrieve" method="POST">
         <div class="form-group">
             <label for="exampleInputEmail1">Retrieve</label>
@@ -29,29 +30,6 @@
 
     </form>
     <br>
-    {% if not session["user_id"] %}
-        <h2>URLs Created</h2>
-        <ul id="urls"></ul>
-        <script>
-            var urlsCount = localStorage.getItem("urls-count");
-            if (urlsCount != 0) {
-                for (let i = 0; i < urlsCount; i++) {
-                    var oldUrl = localStorage.getItem(`url-${i+1}-old`);
-                    var newUrl = localStorage.getItem(`url-${i+1}-new`);
-
-                    var a = document.createElement('a');
-                    var linkText = document.createTextNode(newUrl);
-                    a.appendChild(linkText);
-                    a.title = newUrl;
-                    a.href = newUrl;
-                    document.getElementById("urls").appendChild(a);
-
-                    var node = document.createElement("LI");
-                    var textnode = document.createTextNode(`${oldUrl}`);
-                    node.appendChild(textnode);
-                    document.getElementById("urls").appendChild(node);
-                }
-            }
-        </script>
     {% endif %}
+    
 {% endblock %}

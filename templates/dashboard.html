@@ -39,13 +39,13 @@
             </div>
         </nav>
         <script>
-            function displayInfo(originalUrl, newUrl, timestamp, click, id) {
+            function displayInfo(url_id, originalUrl, newUrl, timestamp, click) {
                 document.getElementById("original_url").textContent = originalUrl;
                 document.getElementById("original_url").textContent = originalUrl;
                 document.getElementById("new_url").textContent = newUrl;
                 document.getElementById("timestamp").textContent = timestamp;
                 document.getElementById("click_count").textContent = click;
-                document.getElementById("id").textContent = id;
+                document.getElementById("id").textContent = url_id;
             }
 
             function copyToClipboard(element) {
@@ -61,11 +61,13 @@
         <div class="row">
             <div class="col-4">
             {% for url in urls %}
-                <div class="url" onclick="displayInfo('{{ url[1] }}', '{{ BASE_URL }}{{ url[3] }}', '{{ url[5] }}', '{{ url[6] }}', '{{ url[0] }}')">
+                <div class="url" onclick="displayInfo('{{ url[0] }}','{{ url[1] }}', '{{ BASE_URL }}{{ url[3] }}', '{{ url[5] }}', '{{ url[6] }}' )">
                 <small>{{ url[4] }}</small>
                 <p>{{ url[1] }}</p>
-                <a href="{{ BASE_URL }}{{ url[3] }}" style="font-size: 10px;" class="new">{{ BASE_URL }}{{ url[3] }}</a>
+                <a href="{{ BASE_URL }}{{ url[3] }}" style="font-size: 10px;" class="new">{{ BASE_URL }}{{ url[3] }}</a>    
+                <br>
                 <span class="clicks"><small>{{ url[7] }}</small> click(s) <i class="fas fa-mouse-pointer"></i></span>
+                <button type="button" style ="margin-left:60px;"  class="btn btn-info" onclick="window.location.replace(`/update?id=${'{{ url[0] }}'}`);">Edit</button>
                 <hr>
                 </div>
             {% endfor %}
@@ -76,9 +78,8 @@
             <!-- <small><span><a href= {{ urls[0][1] }}  id="original_url">{{ urls[0][1] }}</a></span></small> -->
             <br><br><br>
             <small><span id="new_url">{{ BASE_URL }}{{ urls[0][3] }}</span></small>
-            <small style="color: white" id="id">{{ urls[0][0] }}</small>
+            <small style="color: black" id="id">{{ urls[0][0] }}</small>
             <button type="button" id="copy" class="btn btn-info" data-container="body" data-toggle="popover" data-placement="right" data-content="Copied" onclick="copyToClipboard('#new_url')">Copy</button>
-            <button type="button" id="edit" class="btn btn-info" onclick="window.location.replace(`/update?id=${document.getElementById('id').textContent}`);">Edit</button>
             <hr>
             </div>
         </div>
