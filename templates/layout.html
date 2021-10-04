@@ -15,9 +15,16 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
+                {% if session["user_id"] %}
                 <li class="nav-item active">
-                  <a class="nav-link" href="/">Shorten Your URL <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="/">Shorten/Retrieve URL <span class="sr-only">(current)</span></a>
                 </li>
+                {% endif %}
+                {% if not session["user_id"] %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="/">Shorten your URL <span class="sr-only">(current)</span></a>
+                </li>
+                {% endif %}
                 {% if session["user_id"] %}
                     <li class="nav-item active">
                         <a class="nav-link" href="/dashboard">Dashboard</a>

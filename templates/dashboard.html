@@ -17,7 +17,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                  <a class="nav-link" href="/">Shorten Your URL <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="/">Shorten/Retrieve URL <span class="sr-only">(current)</span></a>
                 </li>
                 {% if session["user_id"] %}
                     <li class="nav-item active">
@@ -78,7 +78,6 @@
             <!-- <small><span><a href= {{ urls[0][1] }}  id="original_url">{{ urls[0][1] }}</a></span></small> -->
             <br><br><br>
             <small><span id="new_url">{{ BASE_URL }}{{ urls[0][3] }}</span></small>
-            <small style="color: black" id="id">{{ urls[0][0] }}</small>
             <button type="button" id="copy" class="btn btn-info" data-container="body" data-toggle="popover" data-placement="right" data-content="Copied" onclick="copyToClipboard('#new_url')">Copy</button>
             <hr>
             </div>
