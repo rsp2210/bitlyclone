@@ -13,13 +13,13 @@ def login_required(f):
     return decorated_function
 
 
-def random_str(digit=7):
+def rand_str_gen(digit=7):
     chars = ""
     for i in range(digit):
         chars += random.choice(string.ascii_letters + string.digits)
     return chars
 
-def validate_url(url):
+def check_url(url):
     import re
     regex = re.compile(
         r'^(?:http|ftp)s?://' 

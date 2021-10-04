@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 
-from helpers import *
+from assist import *
 
 if not os.getenv('DATABASE_URL'):
     conn = sqlite3.connect("db.sqlite3", check_same_thread=False)
@@ -26,11 +26,11 @@ BASE_URL = "http://rp-bitlyclone.herokuapp.com/url/"
 def index():
     if request.method == "POST":
         if not request.form.get("url"):
-            "please fill out all required fields"
-        auto_code = random_str()
+            return render_template("reqf.html")
+        auto_code = rand_str_gen()
         codes = c.execute("SELECT * FROM urls WHERE auto_code=:auto_code OR code=:auto_code", {"auto_code" : auto_code}).fetchall()
         while len(codes) != 0:
-            auto_code = random_str()
+            auto_code = rand_str_gen()
             codes = c.execute("SELECT * FROM urls WHERE auto_code=:auto_code OR code=:auto_code", {"auto_code" : auto_code}).fetchall()
        
         import time
@@ -44,8 +44,8 @@ def index():
         conn.commit()
 
         if session.get("user_id"):
-            return render_template("confirm.html", BASE_URL=BASE_URL, code=auto_code, original_url=request.form.get("url"))
-        return render_template("success.html", BASE_URL=BASE_URL, auto_code=auto_code, old=request.form.get("url"))
+            return render_template("uidsubmit.html", BASE_URL=BASE_URL, code=auto_code, original_url=request.form.get("url"))
+        return render_template("submit.html", BASE_URL=BASE_URL, auto_code=auto_code, old=request.form.get("url"))
     else:
         return render_template("index.html")
 
@@ -53,7 +53,7 @@ def index():
 def retrieve():
     if request.method == "POST":
         if not request.form.get("rurl"):
-            "please fill out all required fields"    
+            return render_template("reqf.html")    
         code_1 = request.form.get("rurl")
         obj = code_1.rsplit('/', 1)[-1]
         codes = c.execute("SELECT * FROM urls WHERE auto_code=:obj OR code=:obj", {"obj" : obj }).fetchall()
@@ -61,7 +61,7 @@ def retrieve():
             if codes:
                 return render_template("retrieve.html", value=codes,BASE_URL=BASE_URL)
             else:
-                return render_template("alreadyregistered.html")
+                return render_template("rerror.html")
         return render_template("retrieve.html", value=codes,BASE_URL=BASE_URL)
 
     else:
@@ -71,10 +71,10 @@ def retrieve():
 def register():
     if request.method == "POST":
             if not request.form.get("email") or not request.form.get("password") or not request.form.get("confirmation"):
-                return "please fill out all fields"
+                return render_template("reqf.html")
 
             if request.form.get("password") != request.form.get("confirmation"):
-                return "password confirmation doesn't match password"
+                return render_template("pswdnm.html")
             exist = c.execute("SELECT * FROM users WHERE email=:email", {"email": request.form.get("email")}).fetchall()
             if len(exist) != 0:
                 return render_template("alreadyregistered.html")
@@ -93,7 +93,7 @@ def login():
 
     if request.method == "POST":
         if not request.form.get("email") or not request.form.get("password"):
-            return "please fill out all required fields"
+            return render_template("reqf.html")
 
         user = c.execute("SELECT * FROM users WHERE email=:email", {"email": request.form.get("email")}).fetchall()
 
@@ -117,7 +117,7 @@ def logout():
 def url(code):
     result = c.execute("SELECT * FROM urls WHERE code=:code", {"code": code}).fetchall()
     if len(result) != 1:
-        return "404"
+        return render_template("404.html")
 
     c.execute("UPDATE urls SET click = :c WHERE url_id=:id", {"c": int(result[0][7]) + 1, "id": result[0][0]})
     conn.commit()
@@ -129,14 +129,14 @@ def url(code):
 def update():
     if request.method  == "POST":
         if not request.form.get("new"):
-            return "please fill out ALL required fields"
+            return render_template("reqf.html")
         if not request.form.get("new").isalnum():
-            return "You must provide ONLY alpha numeric value"
+            return render_template("alnum.html")
 
         codes = c.execute("SELECT * FROM urls WHERE auto_code != :new AND code=:new", {"new": request.form.get("new")}).fetchall()
 
         if len(codes) != 0:
-            return "code already exists"
+            return render_template("codeexists.html")
         c.execute("UPDATE urls SET code=:new WHERE auto_code=:code OR code=:code", {"new": request.form.get("new"), "code": request.form.get("code")})
         conn.commit()
         return redirect("/dashboard")
@@ -145,8 +145,8 @@ def update():
             return "please fill out all required fields"
         url = c.execute("SELECT * FROM urls WHERE url_id=:id", {"id": request.args.get("id")}).fetchall()
         if session.get("user_id") != url[0][6]:
-            return "403"
-        return render_template("confirm.html", BASE_URL=BASE_URL, code=url[0][3], original_url=url[0][1])
+            return render_template("403.html")
+        return render_template("uidsubmit.html", BASE_URL=BASE_URL, code=url[0][3], original_url=url[0][1])
 
 
 @app.route("/dashboard")
@@ -161,17 +161,17 @@ def api():
     if request.args.get("custom") and not request.args.get("url"):
         url = c.execute("SELECT * FROM urls WHERE auto_code = :custom OR code = :custom", {"custom": request.args.get("custom")}).fetchall()
         if len(url) == 0:
-            return jsonify(code=200, description="Your custom code is available as of now")
-        return jsonify(code=400, error="Your custom code already exist")
+            return jsonify(code=200, description="Custom url is available")
+        return jsonify(code=400, error="Custom url already exist")
     if not request.args.get("url"):
-            return jsonify(code=400, error="Please fill out url parameter")
-    if not validate_url(request.args.get("url")):
-        return jsonify(code=400, error="Your URL is not valid")
+            return jsonify(code=400, error="Fill the url parameters")
+    if not check_url(request.args.get("url")):
+        return jsonify(code=400, error="URL is invalid")
     if not request.args.get("custom"):
-        auto_code = random_str()
+        auto_code = rand_str_gen()
         codes = c.execute("SELECT * FROM urls WHERE auto_code=:auto_code OR code=:auto_code", {"auto_code" : auto_code}).fetchall()
         while len(codes) != 0:
-            auto_code = random_str()
+            auto_code = rand_str_gen()
             codes = c.execute("SELECT * FROM urls WHERE auto_code=:auto_code OR code=:auto_code", {"auto_code" : auto_code}).fetchall()
         c.execute("INSERT INTO urls (original_url, auto_code, code, click) VALUES (:o_url, :code, :code, 0)", {"o_url": request.args.get("url"), "code": auto_code})
         conn.commit()
@@ -179,7 +179,7 @@ def api():
     if request.args.get("custom"):
         url = c.execute("SELECT * FROM urls WHERE auto_code = :custom OR code = :custom", {"custom": request.args.get("custom")}).fetchall()
         if len(url) != 0:
-            return jsonify(code=400, error="code already exists")
+            return jsonify(code=400, error="Code already exists")
 
         c.execute("INSERT INTO urls (original_url, auto_code, code, click) VALUES (:o_url, :code, :code, 0)", {"o_url": request.args.get("url"), "code": request.args.get("custom")})
         conn.commit()
