@@ -66,13 +66,6 @@ def index():
 
 @app.route("/retrieve", methods=["GET", "POST"])
 def retrieve():
-    
-        # check whether the code created is valid
-        c.execute("DELETE FROM urls" )
-
-        # render different template based on wheter user logged in or not
-
-""" def retrieve():
     if request.method == "POST":
 
         # check whether all fields filled
@@ -92,7 +85,6 @@ def retrieve():
 
     else:
         return render_template("index.html")
-"""
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
