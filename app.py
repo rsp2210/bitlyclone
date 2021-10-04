@@ -38,7 +38,7 @@ def index():
        
         today = date.today()
         date = today.strftime("%m/%d/%y")
-        ts = time.gmtime()
+        ts = time.localtime()
         timestamp = time.strftime("%x %X", ts)
         c.execute("INSERT INTO urls (original_url, auto_code, code, date, timestamp, user_id, click) VALUES (:o_url, :code, :code, :date, :time, :u_id, 0)", {"o_url": request.form.get("url"), "code": auto_code, "date": date, "time": timestamp, "u_id": session.get("user_id")})
         conn.commit()
