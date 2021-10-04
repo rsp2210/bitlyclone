@@ -1,3 +1,3 @@
-# Bit.ly Clone
+Bit.ly Clone
 
-Available at https://bitly-clone-flask.herokuapp.com# bitlyclone
+Deployed at "https://rp-bitlyclone.herokuapp.com/"

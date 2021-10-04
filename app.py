@@ -4,7 +4,7 @@ import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-import re
+
 
 from helpers import *
 
@@ -16,7 +16,6 @@ else:
     db = scoped_session(sessionmaker(bind=engine))
     conn = db()
     c = conn
-
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secretkey"
