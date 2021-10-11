@@ -59,7 +59,7 @@ def retrieve():
         codes = c.execute("SELECT * FROM urls WHERE auto_code=:obj OR code=:obj", {"obj" : obj }).fetchall()
         if session.get("user_id"):
             if codes:
-                return render_template("retrieve.html", value=codes,BASE_URL=BASE_URL)
+                return jsonify(codes)
             else:
                 return render_template("rerror.html")
         return render_template("retrieve.html", value=codes,BASE_URL=BASE_URL)
