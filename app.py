@@ -47,7 +47,7 @@ def index():
             return auto_code
         return auto_code
     else:
-        return render_template("index.html")
+        return auto_code
 
 @app.route("/retrieve", methods=["GET", "POST"])
 def retrieve():
