@@ -47,7 +47,7 @@ def index():
             return auto_code
         return auto_code
     else:
-        return auto_code
+        return ("index.html")
 
 @app.route("/retrieve", methods=["GET", "POST"])
 def retrieve():
@@ -103,7 +103,7 @@ def login():
         if check_password_hash(pwhash, request.form.get("password")) == False:
             return render_template("wpswd.html")
         session["user_id"] = user[0][0]
-        return redirect("/")
+        return session["user_id"]
     else:
         return render_template("login.html")
 
