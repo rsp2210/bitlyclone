@@ -44,8 +44,8 @@ def index():
         conn.commit()
 
         if session.get("user_id"):
-            return render_template("uidsubmit.html", BASE_URL=BASE_URL, code=auto_code, original_url=request.form.get("url"))
-        return render_template("submit.html", BASE_URL=BASE_URL, auto_code=auto_code, old=request.form.get("url"))
+            return auto_code
+        return auto_code
     else:
         return render_template("index.html")
 
